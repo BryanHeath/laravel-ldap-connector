@@ -35,29 +35,29 @@ It uses [adLDAP library](https://github.com/adldap/adLDAP) to create a bridge be
   **All of these are required**
     
 ```php
-    return [
-    	'account_suffix'=>  "@domain.local",
-        // Load balancing domain controllers, but only one is requried
-    	'domain_controllers'=>  [
-            "192.168.0.1", 
-            "dc02.domain.local"
-        ],
-    	'base_dn'   =>  'DC=domain,DC=local',
-        // AD attributes to get http://msdn.microsoft.com/en-us/library/windows/desktop/ms675090%28v=vs.85%29.aspx
-        'fields' => [
-            'company',
-            'department',
-            'displayname',
-            'homephone',
-            'mail',
-            'memberof',
-            'mobile',
-            'primarygroupid',
-            'samaccountname',
-            'telephonenumber',
-            'title',
-        ]
-    ];
+return [
+	'account_suffix'=>  "@domain.local",
+    // Load balancing domain controllers, but only one is requried
+	'domain_controllers'=>  [
+        "192.168.0.1", 
+        "dc02.domain.local"
+    ],
+	'base_dn'   =>  'DC=domain,DC=local',
+    // AD attributes to get http://msdn.microsoft.com/en-us/library/windows/desktop/ms675090%28v=vs.85%29.aspx
+    'fields' => [
+        'company',
+        'department',
+        'displayname',
+        'homephone',
+        'mail',
+        'memberof',
+        'mobile',
+        'primarygroupid',
+        'samaccountname',
+        'telephonenumber',
+        'title',
+    ]
+];
 ```
 
 1. Once this is done you arrived at the final step and you will need to add a service provider. Open `config/app.php`, and add a new item to the providers array.
@@ -73,19 +73,19 @@ The LDAP plugin is an extension of the AUTH class and will act the same as norma
 
 
 ```php
-    if (Auth::attempt(array('username' => $email, 'password' => $password)))
-    {
-        return Redirect::intended('dashboard');
-    }
+if (Auth::attempt(array('username' => $email, 'password' => $password)))
+{
+    return Redirect::intended('dashboard');
+}
 ```
 ### Getting ldap fields
 
 All the fields are stored in the `Auth::user()->ldap` object as public properties.
 
-    ```php
-    Email: {{ Auth::user()->mail }}
-    Department {{ Auth::user()->department }}
-    ```
+```php
+Email: {{ Auth::user()->mail }}
+Department {{ Auth::user()->department }}
+```
 
 You can find more examples on [Laravel Auth Documentation](http://laravel.com/docs/master/authentication) on using the `Auth::` function.
 
