@@ -19,6 +19,9 @@
         "laravel/framework": "~5.0",
         "adldap/adldap": "4.0-stable"
     },
+    "require-dev": {
+        "mockery/mockery": "dev-master"
+    },
     "autoload": {
         "psr-4": {
             "T3chn0crat\\LdapConnector\\": "src/"
