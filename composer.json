@@ -24,5 +24,5 @@
             "T3chn0crat\\LdapConnector\\": "src/"
         }
     },
-    "minimum-stability": "dev",
+    "minimum-stability": "dev"
 }
