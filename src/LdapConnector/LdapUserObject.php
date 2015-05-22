@@ -16,19 +16,21 @@ class LdapUserObject
     }
 
     /**
+     * Set all the elements to public properties on the object
+     *
      * @param array $ldapCollection
      * @param array $fields
      */
     public function setElements(array $ldapCollection, $fields)
     {
-        array_walk($fields, function($field, $trash) use($ldapCollection) {
+        array_walk($fields, function ($field, $trash) use ($ldapCollection) {
             if (isset($ldapCollection[$field])) {
                 $element = $ldapCollection[$field];
                 if ($element['count'] == 1) {
                     $this->{$field} = $element[0];
                 } else {
                     $array = [];
-                    foreach($element as $key => $value) {
+                    foreach ($element as $key => $value) {
                         if ($key === 'count') {
                             continue;
                         }
@@ -43,6 +45,8 @@ class LdapUserObject
     }
 
     /**
+     * Convert to array
+     *
      * @return array
      */
     public function toArray()

@@ -23,7 +23,7 @@ class LdapConnectorServiceProvider extends ServiceProvider {
 	public function boot()
 	{
         $this->app['auth']->extend('ldap', function($app) {
-			$provider = new LdapUserProvider($this->getConfig());
+			$provider = new LdapUserProvider($this->getConfig(), $this->app['config']['auth']['model']);
 			return new Guard($provider, $app['session.store']);
 		});
 	}

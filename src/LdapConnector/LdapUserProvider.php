@@ -1,37 +1,50 @@
 <?php
 namespace T3chn0crat\LdapConnector;
 
-
 use adLDAP\adLDAP;
 use Illuminate\Contracts\Auth\Authenticatable;
 use Illuminate\Contracts\Auth\UserProvider as UserProviderInterface;
+use T3chn0crat\LdapConnector\LdapUserObject;
 
-class LdapUserProvider implements UserProviderInterface {
-
-    protected $elements = [
-        'displayname'   => 'name',
-        'givenname'     => 'first_name',
-        'sn'            => 'last_name',
-        'username'      => 'username',
-        'mail'          => 'email',
-    ];
-
+class LdapUserProvider implements UserProviderInterface
+{
     /**
- * Stores connection to LDAP.
- *
- * @var adLDAP
- */
+     * Stores connection to LDAP.
+     *
+     * @var adLDAP
+     */
     protected $adldap;
+    /**
+     * AD attributes to get
+     * For more see:
+     * http://msdn.microsoft.com/en-us/library/windows/desktop/ms675090%28v=vs.85%29.aspx
+     *
+     * @var array
+     */
+    protected $fields;
+    /**
+     * User model
+     *
+     * @var \Model
+     */
+    private $model;
 
     /**
      * Creates a new LdapUserProvider and connect to Ldap
      *
      * @param array $config
-     * @return void
+     * @param string $model
+     * @throws Exception
      */
-    public function __construct($config)
+    public function __construct($config, $model)
     {
+        if (!is_array($config['fields']) || empty($config['fields'])) {
+            throw new Exception('ldap config needs to ldap fields');
+        }
+
         $this->adldap = new adLDAP($config);
+        $this->fields = $config['fields'];
+        $this->model  = $model;
     }
 
     /**
@@ -46,25 +59,16 @@ class LdapUserProvider implements UserProviderInterface {
      * Create LDAP User Instance
      *
      * @param $userInfo
-     * @return LdapUser
+     * @return \Model
      */
     public function createUser($userInfo)
     {
-        $values = [];
-        foreach($userInfo as $key => $value){
-            if (isset($this->elements[$key])) {
-                $values[$this->elements[$key]] = $value[0];
-            } else if ($key == 'distinguishedname' && is_array($value)) {
-                if (($pos = stripos($value[0], 'dc=')) !== false) {
-                    $domain = substr($value[0], $pos + 3);
-                    $domain = str_ireplace(',dc=', '.', $domain);
-                    $values['domain'] = $domain;
-                }
-            }
-            $values['ldap'][$key] = $value[0];
-        }
+        $user = new $this->model([
+            'username' => $userInfo['username'],
+        ]);
+        $user->ldap = new LdapUserObject($userInfo, $this->fields);
 
-        return new LdapUser($values);
+        return $user;
     }
 
     /**
@@ -75,17 +79,18 @@ class LdapUserProvider implements UserProviderInterface {
      */
     public function retrieveById($identifier)
     {
-        $userInfo = $this->adldap->user()->info($identifier, array('*'))[0];
+        $userInfo = $this->adldap->user()
+                                 ->info($identifier, $this->fields)[0];
 
         $userInfo['username'][0] = $identifier;
-		
-		return $this->createUser($userInfo);
+
+        return $this->createUser($userInfo);
     }
 
     /**
      * Retrieve a user by by their unique identifier and "remember me" token.
      *
-     * @param  mixed $identifier
+     * @param  mixed  $identifier
      * @param  string $token
      * @return Authenticatable|null
      */
@@ -96,7 +101,7 @@ class LdapUserProvider implements UserProviderInterface {
 
     /**
      * @param Authenticatable $user
-     * @param string $token
+     * @param string          $token
      */
     public function updateRememberToken(Authenticatable $user, $token)
     {
@@ -112,8 +117,10 @@ class LdapUserProvider implements UserProviderInterface {
     public function retrieveByCredentials(array $credentials)
     {
         if ($this->adldap->authenticate($credentials['username'], $credentials['password'])) {
-            $userInfo = $this->adldap->user()->info($credentials['username'], array('*'))[0];
+            $userInfo                = $this->adldap->user()
+                                                    ->info($credentials['username'], $this->fields)[0];
             $userInfo['username'][0] = $credentials['username'];
+
             return $this->createUser($userInfo);
         }
     }

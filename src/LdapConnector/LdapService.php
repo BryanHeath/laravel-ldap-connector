@@ -5,12 +5,14 @@ use adLDAP\adLDAP;
 use App;
 use Exception;
 use Illuminate\Support\Collection;
+use T3chn0crat\LdapConnector\LdapUserObject;
 
 class LdapService
 {
     /**
      * AD attributes to get
      * For more see:
+     *
      * http://msdn.microsoft.com/en-us/library/windows/desktop/ms675090%28v=vs.85%29.aspx
      * @var array
      */
@@ -71,10 +73,7 @@ class LdapService
             if (!isset($info['displayname'])) {
                 continue;
             }
-            $collection->push(new \T3chn0crat\LdapConnector\LdapUserObject(
-                $info,
-                $this->fields
-            ));
+            $collection->push(new LdapUserObject($info, $this->fields));
         }
 
         return $collection;
