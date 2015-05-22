@@ -60,7 +60,7 @@ return [
 ];
 ```
 
-1. Once this is done you arrived at the final step and you will need to add a service provider. Open `config/app.php`, and add a new item to the providers array.
+5. Once this is done you arrived at the final step and you will need to add a service provider. Open `config/app.php`, and add a new item to the providers array.
 
 	```php
 	'T3chn0crat\LdapConnector\LdapConnectorServiceProvider'
@@ -78,13 +78,26 @@ if (Auth::attempt(array('username' => $email, 'password' => $password)))
     return Redirect::intended('dashboard');
 }
 ```
-### Getting ldap fields
+### Getting LDAP fields
 
 All the fields are stored in the `Auth::user()->ldap` object as public properties.
 
 ```php
-Email: {{ Auth::user()->mail }}
-Department {{ Auth::user()->department }}
+Email: {{ Auth::user()->ldap->mail }}
+Department {{ Auth::user()->ldap->department }}
+```
+
+### Getting all users
+You can use the LdapService object and getAllUsersWithInfo to return a Laravel Collection of LdapUserObjects.
+```php
+$ldap = App::make('T3chn0crat\LdapConnector\LdapService', [Config::get('ldap')]);
+$collection = $ldap->getAllUsersWithInfo();
+```
+You can now apply all the collection function to it.  The results will be LdapUserObjects
+```php
+$test = $collection->where('mail', 'test@foo.com');
+$department = $test->department;
+
 ```
 
 You can find more examples on [Laravel Auth Documentation](http://laravel.com/docs/master/authentication) on using the `Auth::` function.
