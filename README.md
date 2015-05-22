@@ -16,7 +16,7 @@ It uses [adLDAP library](https://github.com/adldap/adLDAP) to create a bridge be
     ```php
     'driver' => 'ldap',
     ```
-    
+
 1. The `config/auth.php` must also have a valid model set.  That model must include
 
     ```php
@@ -29,12 +29,14 @@ It uses [adLDAP library](https://github.com/adldap/adLDAP) to create a bridge be
     ```
 
 1. Create a new configuration file `ldap.php` in the configuration folder of Laravel `app/config/ldap.php` and modify to your needs. For more detail of the configuration you can always check on [adLDAP documentation](http://adldap.sourceforge.net/wiki/doku.php?id=documentation_configuration)
+
+All of these are required
     
-    ```
-    return array(
-        //These are requried
+    ```php
+    return [
     	'account_suffix'=>  "@domain.local",
-    	'domain_controllers'=>  [ // Load balancing domain controllers
+        // Load balancing domain controllers, but only one is requried
+    	'domain_controllers'=>  [
             "192.168.0.1", 
             "dc02.domain.local"
         ],
@@ -53,7 +55,7 @@ It uses [adLDAP library](https://github.com/adldap/adLDAP) to create a bridge be
             'telephonenumber',
             'title',
         ]
-    );
+    ];
     ```
 1. Once this is done you arrived at the final step and you will need to add a service provider. Open `config/app.php`, and add a new item to the providers array.
 	
