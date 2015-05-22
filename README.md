@@ -30,7 +30,7 @@ It uses [adLDAP library](https://github.com/adldap/adLDAP) to create a bridge be
 
 1. Create a new configuration file `ldap.php` in the configuration folder of Laravel `app/config/ldap.php` and modify to your needs. For more detail of the configuration you can always check on [adLDAP documentation](http://adldap.sourceforge.net/wiki/doku.php?id=documentation_configuration)
 
-All of these are required
+**All of these are required**
     
     ```php
     return [
@@ -57,15 +57,17 @@ All of these are required
         ]
     ];
     ```
+
 1. Once this is done you arrived at the final step and you will need to add a service provider. Open `config/app.php`, and add a new item to the providers array.
-	
-	```
+
+	```php
 	'T3chn0crat\LdapConnector\LdapConnectorServiceProvider'
 	```
 
 ## Usage
 The LDAP plugin is an extension of the AUTH class and will act the same as normal usage with Eloquent driver.
-    
+
+
     ```php
     if (Auth::attempt(array('username' => $email, 'password' => $password)))
     {
