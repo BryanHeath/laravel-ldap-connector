@@ -32,7 +32,7 @@ It uses [adLDAP library](https://github.com/adldap/adLDAP) to create a bridge be
 
 **All of these are required**
     
-    ```php
+```php
     return [
     	'account_suffix'=>  "@domain.local",
         // Load balancing domain controllers, but only one is requried
@@ -56,7 +56,7 @@ It uses [adLDAP library](https://github.com/adldap/adLDAP) to create a bridge be
             'title',
         ]
     ];
-    ```
+```
 
 1. Once this is done you arrived at the final step and you will need to add a service provider. Open `config/app.php`, and add a new item to the providers array.
 
@@ -68,12 +68,12 @@ It uses [adLDAP library](https://github.com/adldap/adLDAP) to create a bridge be
 The LDAP plugin is an extension of the AUTH class and will act the same as normal usage with Eloquent driver.
 
 
-    ```php
+```php
     if (Auth::attempt(array('username' => $email, 'password' => $password)))
     {
         return Redirect::intended('dashboard');
     }
-    ```
+```
 
 
 You can find more examples on [Laravel Auth Documentation](http://laravel.com/docs/master/authentication) on using the `Auth::` function.
