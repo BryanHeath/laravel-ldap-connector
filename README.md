@@ -1,3 +1,5 @@
+![travis build](https://travis-ci.org/T3chn0crat/laravel-ldap-connector.svg?branch=master)
+
 # Package
 This package is a fork of dsdevbe's package (https://github.com/dsdevbe/ldap-connector).
 
@@ -30,7 +32,7 @@ It uses [adLDAP library](https://github.com/adldap/adLDAP) to create a bridge be
 
 1. Create a new configuration file `ldap.php` in the configuration folder of Laravel `app/config/ldap.php` and modify to your needs. For more detail of the configuration you can always check on [adLDAP documentation](http://adldap.sourceforge.net/wiki/doku.php?id=documentation_configuration)
 
-**All of these are required**
+  **All of these are required**
     
 ```php
     return [
@@ -65,6 +67,8 @@ It uses [adLDAP library](https://github.com/adldap/adLDAP) to create a bridge be
 	```
 
 ## Usage
+
+### Authentication
 The LDAP plugin is an extension of the AUTH class and will act the same as normal usage with Eloquent driver.
 
 
@@ -74,6 +78,14 @@ The LDAP plugin is an extension of the AUTH class and will act the same as norma
         return Redirect::intended('dashboard');
     }
 ```
+### Getting ldap fields
 
+All the fields are stored in the `Auth::user()->ldap` object as public properties.
+
+    ```php
+    Email: {{ Auth::user()->mail }}
+    Department {{ Auth::user()->department }}
+    ```
 
 You can find more examples on [Laravel Auth Documentation](http://laravel.com/docs/master/authentication) on using the `Auth::` function.
+
