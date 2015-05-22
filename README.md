@@ -1,13 +1,14 @@
 # Package
-This package is a fork of DsDevbe's package (https://github.com/dsdevbe/ldap-connector)
+This package is a fork of dsdevbe's package (https://github.com/dsdevbe/ldap-connector).
 
-# Ldap-connector
-Provides an solution for authentication users with LDAP for Laravel 5.0.x. It uses ADLDAP library to create a bridge between Laravel and LDAP
+This package will allow you to authenticate to and fetch data from LDAP using Laravel 5.0.x.
+
+It uses adLDAP library (https://github.com/adldap/adLDAP) to create a bridge between Laravel and LDAP.  adLDAP requires PHP 5 and both the LDAP (http://php.net/ldap) and SSL (http://php.net/openssl) libraries adLDAP version 5.0.0 will require PHP 5.3+
 
 ## Installation
 1. Install this package through Composer for Laravel v5.0:
     ```js
-    composer require T3chn0crat/laravel-ldap-connector:dev
+    composer require T3chn0crat/laravel-ldap-connector:dev-master
     ```
 
 1. Change the authentication driver in the Laravel config to use the ldap driver. You can find this in the following file `config/auth.php`

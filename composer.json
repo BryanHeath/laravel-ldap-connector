@@ -1,7 +1,7 @@
 {
-    "name": "T3chn0crat/laravel-ldap-connector",
-    "description": "Easily authenticate with LDAP in Laravel",
-    "homepage": "https://github.com/T3chn0crat/laravel-ldap-connector",
+    "name": "t3chn0crat/laravel-ldap-connector",
+    "description": "Authenticate with and fecth data from LDAP in Laravel",
+    "homepage": "https://github.com/t3chn0crat/laravel-ldap-connector",
     "keywords": ["Laravel", "Ldap"],
     "license": "MIT",
     "authors": [
@@ -23,5 +23,6 @@
         "psr-4": {
             "T3chn0crat\\LdapConnector\\": "src/"
         }
-    }
+    },
+    "minimum-stability": "dev",
 }
