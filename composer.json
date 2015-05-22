@@ -1,7 +1,7 @@
 {
-    "name": "dsdevbe/ldap-connector",
+    "name": "T3chn0crat/laravel-ldap-connector",
     "description": "Easily authenticate with LDAP in Laravel",
-    "homepage": "https://github.com/dsdevbe/ldap-connector",
+    "homepage": "https://github.com/T3chn0crat/laravel-ldap-connector",
     "keywords": ["Laravel", "Ldap"],
     "license": "MIT",
     "authors": [

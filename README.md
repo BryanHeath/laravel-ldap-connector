@@ -1,4 +1,4 @@
-# Package abandoned
+# Package
 This package is a fork of DsDevbe's package (https://github.com/dsdevbe/ldap-connector)
 
 # Ldap-connector
@@ -20,8 +20,24 @@ Provides an solution for authentication users with LDAP for Laravel 5.0.x. It us
     ```
     return array(
     	'account_suffix'=>  "@domain.local",
-    	'domain_controllers'=>  array("192.168.0.1", "dc02.domain.local"), // Load balancing domain controllers
+    	'domain_controllers'=>  [ // Load balancing domain controllers
+            "192.168.0.1", 
+            "dc02.domain.local"
+        ],
     	'base_dn'   =>  'DC=domain,DC=local',
+        'fields' => [ // AD attributes to get http://msdn.microsoft.com/en-us/library/windows/desktop/ms675090%28v=vs.85%29.aspx
+            'company',
+            'department',
+            'displayname',
+            'homephone',
+            'mail',
+            'memberof',
+            'mobile',
+            'primarygroupid',
+            'samaccountname',
+            'telephonenumber',
+            'title',
+        ]
     );
     ```
 1. Once this is done you arrived at the final step and you will need to add a service provider. Open `config/app.php`, and add a new item to the providers array.
