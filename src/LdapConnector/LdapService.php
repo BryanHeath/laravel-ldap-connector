@@ -33,9 +33,11 @@ class LdapService
      */
     public function __construct($config)
     {
+        //We need the admin account to do some of the services
         if (!isset($config['admin_username']) || !isset($config['admin_password'])) {
             throw new Exception('ldap config needs to have admin_username and admin_password');
         }
+        //Need the fields to know what to fetch
         if (!is_array($config['fields']) || empty($config['fields'])) {
             throw new Exception('ldap config needs to ldap fields');
         }
@@ -53,6 +55,8 @@ class LdapService
     }
 
     /**
+     * Get all the LDAP users
+     *
      * @return array
      */
     public function getAllUsers()
@@ -61,18 +65,25 @@ class LdapService
     }
 
     /**
+     * Get all users with their LDAP fields
+     *
      * @return Collection
      * @throws Exception
      */
-    public function getAllUsersWithInfo()
+    public function getAllUsersWithFields()
     {
+        //Get all users from LDAP
         $users = $this->getAllUsers();
         $collection = new Collection([]);
+
         foreach($users as $user) {
             $info = $this->adldap->user()->info($user, $this->fields)[0];
+            //If there is no displayname its probably a local account
             if (!isset($info['displayname'])) {
                 continue;
             }
+
+            //Add it to the collection
             $collection->push(new LdapUserObject($info, $this->fields));
         }
 

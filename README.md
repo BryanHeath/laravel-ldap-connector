@@ -103,11 +103,11 @@ if (Auth::user()->ldap->isMemberOf('Git Hub Users')) { return 'yes'; }
 
 ### Getting all users
 
-You can use the LdapService object and getAllUsersWithInfo to return a Laravel Collection of LdapUserObjects.
+You can use the LdapService object and getAllUsersWithFields to return a Laravel Collection of LdapUserObjects.
 
 ```php
 $ldap = App::make('T3chn0crat\LdapConnector\LdapService', [Config::get('ldap')]);
-$collection = $ldap->getAllUsersWithInfo();
+$collection = $ldap->getAllUsersWithFields();
 ```
 
 You can now apply all the collection function to it.  The results will be a collection of LdapUserObjects
