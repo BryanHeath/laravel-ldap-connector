@@ -9,7 +9,7 @@ use T3chn0crat\LdapConnector\LdapUserObject;
 class LdapUserProvider implements UserProviderInterface
 {
     /**
-     * Stores connection to LDAP.
+     * Stores connection to LDAP
      *
      * @var adLDAP
      */
@@ -38,6 +38,7 @@ class LdapUserProvider implements UserProviderInterface
      */
     public function __construct($config, $model)
     {
+        //We need to know which fields to fetch
         if (!is_array($config['fields']) || empty($config['fields'])) {
             throw new Exception('ldap config needs to ldap fields');
         }
@@ -52,6 +53,7 @@ class LdapUserProvider implements UserProviderInterface
      */
     public function __destruct()
     {
+        //Need to manually close the connection
         $this->adldap->close();
     }
 
@@ -63,9 +65,11 @@ class LdapUserProvider implements UserProviderInterface
      */
     public function createUser($userInfo)
     {
+        //Create a new User model with the passed in model
         $user = new $this->model([
             'username' => $userInfo['username'],
         ]);
+        //Add ldap object to it
         $user->ldap = new LdapUserObject($userInfo, $this->fields);
 
         return $user;
@@ -137,5 +141,4 @@ class LdapUserProvider implements UserProviderInterface
 
         return $this->adldap->authenticate($username, $password);
     }
-
 }

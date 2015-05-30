@@ -16,7 +16,30 @@ class LdapUserObject
     }
 
     /**
-     * Set all the elements to public properties on the object
+     * Check to see if a user is in a group
+     *
+     * @param string $group
+     * @return bool
+     */
+    public function isMemberOf($group)
+    {
+        if (is_array($this->memberof)) {
+            foreach ($this->memberof as $in) {
+                if (($pos = strpos($in, ',')) !== false) {
+                    $in = substr($in, 0, $pos);
+                }
+                $in = str_ireplace('CN=', '', $in);
+                if (strtolower($in) === strtolower($group)) {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+    }
+
+    /**
+     * Set all the elements to public properties on $this
      *
      * @param array $ldapCollection
      * @param array $fields

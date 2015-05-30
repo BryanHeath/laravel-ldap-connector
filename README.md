@@ -78,27 +78,42 @@ if (Auth::attempt(array('username' => $email, 'password' => $password)))
     return Redirect::intended('dashboard');
 }
 ```
+You can find more examples on [Laravel Auth Documentation](http://laravel.com/docs/master/authentication) on using the `Auth::` function.
+
 ### Getting LDAP fields
 
-All the fields are stored in the `Auth::user()->ldap` object as public properties.
+All the LDAP fields are stored in the `Auth::user()->ldap` object as public properties.
 
 ```php
 Email: {{ Auth::user()->ldap->mail }}
 Department {{ Auth::user()->ldap->department }}
 ```
 
+### LdapUserObject Methods
+
+1. isMemberOf($group)
+
+Will test a user to see if they are a member of the passed in group.  Returns a bool
+
+
+```php
+if (Auth::user()->ldap->isMemberOf('Git Hub Users')) { return 'yes'; }
+
+```
+
 ### Getting all users
+
 You can use the LdapService object and getAllUsersWithInfo to return a Laravel Collection of LdapUserObjects.
+
 ```php
 $ldap = App::make('T3chn0crat\LdapConnector\LdapService', [Config::get('ldap')]);
 $collection = $ldap->getAllUsersWithInfo();
 ```
-You can now apply all the collection function to it.  The results will be LdapUserObjects
+
+You can now apply all the collection function to it.  The results will be a collection of LdapUserObjects
+
 ```php
 $test = $collection->where('mail', 'test@foo.com');
 $department = $test->department;
 
 ```
-
-You can find more examples on [Laravel Auth Documentation](http://laravel.com/docs/master/authentication) on using the `Auth::` function.
-
